@@ -51,32 +51,37 @@ public class UserPagingResource extends ListenableFuturePagingSource<Integer,Use
         }
         Integer finalNextIndex = nextIndex;
         Log.d("debug_log","finalNextIndex = " + finalNextIndex);
-        ListenableFuture<LoadResult<Integer,User>> pageFuture = Futures
-                .transform(executorService.submit(new Callable<List<User>>() {
-                    @Override
-                    public List<User> call() throws Exception {
-                        if(finalNextIndex == 0){
-                            Log.d("debug_log","开始初始加载");
-                        }
-                        List<User> list = UserResponse.getUsers(finalNextIndex, PAGE_SIZE);
+        ListenableFuture<LoadResult<Integer, User>> pageFuture = Futures
+                .transform(
 
-                        Log.d("debug_log","start = " + list.get(0).getName() + "  end = " + list.get(list.size() -1).getName());
-                        return list;
-                    }
-                }),new Function<List<User>,LoadResult.Page<Integer,User>>(){
-                    @Override
-                    public LoadResult.Page<Integer, User> apply(List<User> input) {
-                        Integer moreIndex = input.isEmpty()?null:finalNextIndex+input.size();
-                        Integer preIndex = null;
-                        if(finalNextIndex != 0){
-                            int length = input == null ? 0 :input.size();
-                            preIndex = finalNextIndex-input.size();
-                        }
+                        executorService.submit(new Callable<List<User>>() {
+                            @Override
+                            public List<User> call() throws Exception {
+                                if (finalNextIndex == 0) {
+                                    Log.d("debug_log", "开始初始加载");
+                                }
+                                List<User> list = UserResponse.getUsers(finalNextIndex, PAGE_SIZE);
 
-                        //这里传入的三个参数中,刚才请求的数据,第二个参数为请求的上一页的页数,当为null时不再加载上一页,第三个参数则是下一页
-                        return new LoadResult.Page<>(input,preIndex,moreIndex);
-                    }
-                },executorService);
+                                Log.d("debug_log", "start = " + list.get(0).getName() + "  end = " + list.get(list.size() - 1).getName());
+                                return list;
+                            }
+                        }),
+                        new Function<List<User>, LoadResult.Page<Integer, User>>() {
+                            @Override
+                            public LoadResult.Page<Integer, User> apply(List<User> input) {
+                                Integer moreIndex = input.isEmpty() ? null : finalNextIndex + input.size();
+                                Integer preIndex = null;
+                                if (finalNextIndex != 0) {
+                                    int length = input == null ? 0 : input.size();
+                                    preIndex = finalNextIndex - input.size();
+                                }
+
+                                //这里传入的三个参数中,刚才请求的数据,第二个参数为请求的上一页的页数,当为null时不再加载上一页,第三个参数则是下一页
+                                return new LoadResult.Page<>(input, preIndex, moreIndex);
+                            }
+                        },
+                        executorService
+                );
 
         ListenableFuture<LoadResult<Integer,User>> partialLoadResultFuture = Futures.catching(
                 pageFuture,
