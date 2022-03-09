@@ -1,5 +1,7 @@
 package com.jetpack.paging3;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.paging.ListenableFuturePagingSource;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
+
 import com.google.common.base.Function;
 
 public class UserPagingResource extends ListenableFuturePagingSource<Integer,User> {
@@ -36,6 +40,7 @@ public class UserPagingResource extends ListenableFuturePagingSource<Integer,Use
             nextIndex = 0;
         }
         Integer finalNextIndex = nextIndex;
+        Log.d("debug_log","finalNextIndex = " + finalNextIndex);
         ListenableFuture<LoadResult<Integer,User>> pageFuture = Futures
                 .transform(executorService.submit(new Callable<List<User>>() {
                     @Override
