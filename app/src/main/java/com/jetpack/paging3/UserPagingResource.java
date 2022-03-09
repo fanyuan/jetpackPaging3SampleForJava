@@ -66,7 +66,7 @@ public class UserPagingResource extends ListenableFuturePagingSource<Integer,Use
                 }),new Function<List<User>,LoadResult.Page<Integer,User>>(){
                     @Override
                     public LoadResult.Page<Integer, User> apply(List<User> input) {
-                        Integer nextIndex = input.isEmpty()?null:finalNextIndex+input.size();
+                        Integer moreIndex = input.isEmpty()?null:finalNextIndex+input.size();
                         Integer preIndex = null;
                         if(finalNextIndex != 0){
                             int length = input == null ? 0 :input.size();
@@ -74,7 +74,7 @@ public class UserPagingResource extends ListenableFuturePagingSource<Integer,Use
                         }
 
                         //这里传入的三个参数中,刚才请求的数据,第二个参数为请求的上一页的页数,当为null时不再加载上一页,第三个参数则是下一页
-                        return new LoadResult.Page<>(input,preIndex,nextIndex);
+                        return new LoadResult.Page<>(input,preIndex,moreIndex);
                     }
                 },executorService);
 
