@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/work/github/jetpackPaging3SampleForJava/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/work/github/jetpackPaging3SampleForJava/app/src/main/res/layout/activity_room.xml" value="0.1" />
+        <entry key="..\:/work/github/jetpackPaging3SampleForJava/app/src/main/res/layout/activity_sample1.xml" value="0.1" />
         <entry key="..\:/work/storehouse/jetpackPaging3SampleForJava/app/src/main/res/layout/item_network_state.xml" value="0.109375" />
         <entry key="..\:/work/storehouse/paging3Sample/app/src/main/res/layout/activity_main.xml" value="0.23958333333333334" />
         <entry key="..\:/work/storehouse/paging3Sample/app/src/main/res/layout/item.xml" value="0.23958333333333334" />

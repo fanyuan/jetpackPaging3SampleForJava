@@ -20,4 +20,20 @@ public class UserResponse {
     private static User getUser(int i) {
         return new User(i,"name" + i,i);
     }
+
+
+    public static List<User> getUsersForRoom(int page,int pageSize){
+        try {Thread.sleep(900);} catch (InterruptedException e) {e.printStackTrace();}
+        Log.d("debug_log","UserResponse --- getUsers page = " + page + " pageSize = " + pageSize +" --- " + Thread.currentThread().getName());
+        int size = page + pageSize;
+        List<User> items = new ArrayList<>();
+        for (;page<size;page++){
+            items.add(getUser(page));
+        }
+        return items;
+    }
+
+    private static User getUserForRoom(int i) {
+        return new User("name" + i,i);
+    }
 }

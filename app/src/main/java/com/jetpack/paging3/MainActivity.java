@@ -9,7 +9,9 @@ import androidx.paging.PagingData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.jetpack.paging3.databinding.ActivityMainBinding;
 
@@ -19,29 +21,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        binding.list.setLayoutManager(layoutManager);
-        ListAdapter adapter = new ListAdapter(new DiffUtil.ItemCallback<User>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull User oldItem, @NonNull User newItem) {
-                return oldItem.getName().equals(newItem.getName());
-            }
 
-            @Override
-            public boolean areContentsTheSame(@NonNull User oldItem, @NonNull User newItem) {
-                return oldItem.getName().equals(newItem.getName());
-            }
-        });
-        binding.list.setAdapter(adapter.withLoadStateFooter(new PostsLoadStateAdapter(adapter)));
-        LoadMoreViewModel loadMoreViewModel=new ViewModelProvider(this).get(LoadMoreViewModel.class);
-        loadMoreViewModel.getPaging().observe(this, new Observer<PagingData<User>>() {
-            @Override
-            public void onChanged(PagingData<User> userPagingData) {
-                adapter.submitData(getLifecycle(),userPagingData);
-            }
-        });
 
-        //loadMoreViewModel.getPaging().observe(this,(data)->{adapter.submitData(getLifecycle(),data);});
+    }
+
+    public void toSample1Activity(View view) {
+        startActivity(new Intent(this,Sample1Activity.class));
+    }
+
+    public void toRoomActivity(View view) {
+        startActivity(new Intent(this,RoomActivity.class));
     }
 }
