@@ -22,10 +22,20 @@ import java.util.logging.Logger;
 import com.google.common.base.Function;
 
 public class UserPagingResource extends ListenableFuturePagingSource<Integer,User> {
+    private static final int PAGE_SIZE = 10;
     /**
      * 需要用到线程池
      */
-    private ListeningExecutorService executorService= MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
+    private ListeningExecutorService executorService;
+    {
+        try{
+            int count = Runtime.getRuntime().availableProcessors();
+            executorService = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(count));
+        }catch (Exception e){
+            executorService = MoreExecutors.listeningDecorator(Executors.newSingleThreadExecutor());
+        }
+        Log.d("debug_log","-----executorService is inited-----");
+    }
     @Nullable
     @Override
     public Integer getRefreshKey(@NonNull PagingState<Integer, User> pagingState) {
@@ -45,13 +55,26 @@ public class UserPagingResource extends ListenableFuturePagingSource<Integer,Use
                 .transform(executorService.submit(new Callable<List<User>>() {
                     @Override
                     public List<User> call() throws Exception {
-                        return UserResponse.getUsers(finalNextIndex,10);
+                        if(finalNextIndex == 0){
+                            Log.d("debug_log","开始初始加载");
+                        }
+                        List<User> list = UserResponse.getUsers(finalNextIndex, PAGE_SIZE);
+
+                        Log.d("debug_log","start = " + list.get(0).getName() + "  end = " + list.get(list.size() -1).getName());
+                        return list;
                     }
                 }),new Function<List<User>,LoadResult.Page<Integer,User>>(){
                     @Override
                     public LoadResult.Page<Integer, User> apply(List<User> input) {
-                        //这里传入的三个参数中,刚才请求的数据,第二个参数为请求的上一页的页数,当为null时不再加载上一页,第三个参数则是下一页,后两个参数不介绍,自行了解
-                        return new LoadResult.Page<>(input,finalNextIndex==0?null:finalNextIndex-1,input.isEmpty()?null:finalNextIndex+1);
+                        Integer nextIndex = input.isEmpty()?null:finalNextIndex+input.size();
+                        Integer preIndex = null;
+                        if(finalNextIndex != 0){
+                            int length = input == null ? 0 :input.size();
+                            preIndex = finalNextIndex-input.size();
+                        }
+
+                        //这里传入的三个参数中,刚才请求的数据,第二个参数为请求的上一页的页数,当为null时不再加载上一页,第三个参数则是下一页
+                        return new LoadResult.Page<>(input,preIndex,nextIndex);
                     }
                 },executorService);
 

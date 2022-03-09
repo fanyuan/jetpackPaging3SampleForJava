@@ -1,10 +1,12 @@
 package com.jetpack.paging3;
 
 public class User {
+    public int id;
     private String name;
     private int age;
 
-    public User(String name, int age) {
+    public User(int id,String name, int age) {
+        this.id = id;
         this.name = name;
         this.age = age;
     }
