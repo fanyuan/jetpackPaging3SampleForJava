@@ -19,6 +19,11 @@ interface UserDao {
      */
     @Delete
     fun delete(vararg user: User)
+    /**
+     * 删除全部对象
+     */
+    @Query("delete from user")
+    fun deleteAll()
 
     /**
      * 更新user对象

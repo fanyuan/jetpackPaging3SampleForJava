@@ -13,7 +13,7 @@ import androidx.paging.PagingLiveData;
 import kotlinx.coroutines.CoroutineScope;
 
 public class LoadMoreViewModelForRoom extends ViewModel {
-	MutableLiveData<PagingData<User>> dataMutableLiveData=new MutableLiveData<>();
+	//MutableLiveData<PagingData<User>> dataMutableLiveData=new MutableLiveData<>();
 	//初始化配置,可以定义最大加载的数据量
 	PagingConfig pagingConfig=new PagingConfig(10,10,false,10);
 

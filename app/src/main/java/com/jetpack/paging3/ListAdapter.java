@@ -1,5 +1,6 @@
 package com.jetpack.paging3;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class ListAdapter extends PagingDataAdapter<User,ListAdapter.Holder> {
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //Log.d("debug_log","ListAdapter   onCreateViewHolder");
         return new ListAdapter.Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item,parent,false));
     }
 
@@ -68,8 +70,11 @@ public class ListAdapter extends PagingDataAdapter<User,ListAdapter.Holder> {
      */
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        holder.age.setText(getItem(position).getAge()+"");
-        holder.name.setText(getItem(position).getName());
+        //Log.d("debug_log","ListAdapter   onBindViewHolder");
+        User user = getItem(position);
+        holder.name.setText("id:" + user.id + "------name:" + user.getName());
+        holder.age.setText(user.getAge()+"");
+
     }
 
     class Holder extends RecyclerView.ViewHolder{

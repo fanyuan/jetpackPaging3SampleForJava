@@ -27,6 +27,12 @@
             android:textAllCaps="false"
             android:text="插入数据到本地"
             android:onClick="insert"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:text="清除本地数据"
+            android:onClick="clear"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"

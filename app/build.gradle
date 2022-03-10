@@ -69,6 +69,8 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'  //这里用到了ViewModelKt,所以需要引入,具体是什么玩意请自行搜索,这里不说明
 
+    implementation('javax.inject:javax.inject:1')
+
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'

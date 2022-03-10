@@ -12,6 +12,7 @@ import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -43,9 +44,9 @@ public class UserPagingResourceRoom extends ListenableFuturePagingSource<Integer
     public ListenableFuture<LoadResult<Integer, User>> loadFuture(@NonNull LoadParams<Integer> loadParams) {
         UserDao dao = UserDataBase.getInstance(MyApplication.instance).userDao();
         Integer nextIndex = loadParams.getKey();
-        if(nextIndex == null){
-            nextIndex = null;
-        }
+//        if(nextIndex == null){
+//            nextIndex = null;
+//        }
         finalNextIndex = nextIndex;
         ListenableFuture<LoadResult<Integer, User>> pageFuture = Futures
                 .transform(
@@ -57,11 +58,9 @@ public class UserPagingResourceRoom extends ListenableFuturePagingSource<Integer
 
                                 Log.d("debug_log","UserPagingResourceRoom  nextIndex = " + finalNextIndex);
 
-
-
                                 if(finalNextIndex == null){
                                     finalNextIndex = dao.top().id;
-                                    Log.d("debug_log"," 开始进行初始加载 ");
+                                    Log.d("debug_log"," 开始进行初始加载 finalNextIndex = " + finalNextIndex + "  " + new Gson().toJson(dao.top()));
                                 }
 
                                 List<User> list = dao.queryRange(finalNextIndex, PAGE_SIZE);
